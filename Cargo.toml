@@ -3,7 +3,7 @@ name = "grafana"
 version = "0.1.1"
 edition = "2024"
 rust-version = "1.92"
-publish = false
+publish = true
 readme = "README.md"
 include = [
   "/Cargo.toml",
