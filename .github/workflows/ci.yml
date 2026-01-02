@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  fmt:
+    name: fmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.92.0
+          components: rustfmt
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt --check
+
+  clippy:
+    name: clippy (all-features)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.92.0
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo clippy --workspace --all-targets --all-features -- -D warnings
+
+  test:
+    name: test (${{ matrix.os }}, ${{ matrix.variant }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        variant:
+          - default
+          - rustls
+          - blocking-rustls
+          - native-tls
+          - blocking-native-tls
+          - all-features
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.92.0
+      - uses: Swatinem/rust-cache@v2
+      - name: Install OpenSSL (Ubuntu)
+        if: matrix.os == 'ubuntu-latest' && (matrix.variant == 'native-tls' || matrix.variant == 'blocking-native-tls' || matrix.variant == 'all-features')
+        run: sudo apt-get update && sudo apt-get install -y pkg-config libssl-dev
+      - name: cargo test (default)
+        if: matrix.variant == 'default'
+        run: cargo test
+      - name: cargo test (rustls)
+        if: matrix.variant == 'rustls'
+        run: cargo test --no-default-features --features async,rustls
+      - name: cargo test (blocking-rustls)
+        if: matrix.variant == 'blocking-rustls'
+        run: cargo test --no-default-features --features blocking,rustls
+      - name: cargo test (native-tls)
+        if: matrix.variant == 'native-tls'
+        run: cargo test --no-default-features --features async,native-tls
+      - name: cargo test (blocking-native-tls)
+        if: matrix.variant == 'blocking-native-tls'
+        run: cargo test --no-default-features --features blocking,native-tls
+      - name: cargo test (all-features)
+        if: matrix.variant == 'all-features'
+        run: cargo test --all-features
