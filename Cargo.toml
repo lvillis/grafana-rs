@@ -1,10 +1,16 @@
 [package]
 name = "grafana"
 version = "0.1.1"
+description = "Ergonomic Rust SDK for Grafana's HTTP API, with async and blocking clients."
+license = "MIT"
 edition = "2024"
 rust-version = "1.92"
 publish = true
 readme = "README.md"
+repository = "https://github.com/lvillis/grafana-rs"
+documentation = "https://docs.rs/grafana"
+keywords = ["grafana", "sdk", "api", "http", "client"]
+categories = ["api-bindings", "web-programming::http-client"]
 include = [
   "/Cargo.toml",
   "/README.md",

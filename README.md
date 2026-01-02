@@ -1,6 +1,6 @@
 # grafana
 
-Async-first Rust SDK for the Grafana HTTP API.
+Ergonomic Rust SDK for Grafana's HTTP API, with async and blocking clients.
 
 This crate provides:
 - A production-hardened `Client` / `BlockingClient` (base URL validation, auth injection, timeouts, retries, redaction).
