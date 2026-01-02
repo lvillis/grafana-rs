@@ -1,4 +1,4 @@
-<h1 align="center"><code>grafana</code></h1>
+<h1 align="center"><code>grafana-rs</code></h1>
 
 <p align="center">
 Ergonomic Rust SDK for Grafana's HTTP API, with async and blocking clients.
