@@ -23,14 +23,14 @@ Ergonomic Rust SDK for Grafana's HTTP API, with async and blocking clients.
 
 ```toml
 [dependencies]
-grafana = "0.1.1" # async + rustls (default)
+grafana = "0.1" # async + rustls (default)
 ```
 
 Blocking-only (no Tokio):
 
 ```toml
 [dependencies]
-grafana = { version = "0.1.1", default-features = false, features = ["blocking", "rustls"] }
+grafana = { version = "0.1", default-features = false, features = ["blocking", "rustls"] }
 ```
 
 Native TLS: replace `rustls` with `native-tls` (and set `default-features = false`).
